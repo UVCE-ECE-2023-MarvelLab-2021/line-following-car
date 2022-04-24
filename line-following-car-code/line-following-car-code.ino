@@ -2,47 +2,23 @@
 int ir1_in = 0,ir2_in = 0;
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  ir1_in = analogRead(ir1_pin);
-  ir2_in = analogRead(ir2_pin);
-  Serial.println(ir1_in);
+// control signals to motors
+#include "motorControls.h"
 
-  if(ir1_in<50 && ir2_in<50){
-    goForward();
+void loop() {
+  ir1_in = analogRead(ir1_pin); // read left sensor input
+  ir2_in = analogRead(ir2_pin); // read right sensor input
+
+  if(ir1_in<50 && ir2_in<50){ 
+    goForward(); // move in straight line 
   }
   else if(ir1_in<50 && ir2_in>50){
-    turnRight();
+    turnRight(); // turn right if right sensor facing black surface
   }
   else if(ir1_in>50 && ir2_in<50){
-    turnLeft();
+    turnLeft();// turn left if left sensor facing black surface
   }
 }
-
-void goForward(){
-  botSpeed = 40;
-  analogWrite(rf_pin,botSpeed);
-  analogWrite(rr_pin,0);
-  analogWrite(lf_pin,botSpeed);
-  analogWrite(lr_pin,0);
-}
-
-void turnRight(){
-  botSpeed = 50;
-  analogWrite(rf_pin,0);
-  analogWrite(rr_pin,botSpeed);
-  analogWrite(lf_pin,botSpeed);
-  analogWrite(lr_pin,0);
-} 
-
-void turnLeft(){
-  botSpeed = 50;
-  analogWrite(rf_pin,botSpeed);
-  analogWrite(rr_pin,0);
-  analogWrite(lf_pin,0);
-  analogWrite(lr_pin,botSpeed);
-} 
